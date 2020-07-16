@@ -25,9 +25,8 @@ int main()
 		sockaddr_in serAddr;
 		serAddr.sin_family = AF_INET;
 		serAddr.sin_port = htons(10240);
-		//serAddr.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
-		PCWSTR src = TEXT("127.0.0.1");
-		InetPton(AF_INET, src, &serAddr.sin_addr.S_un.S_addr);
+		PCSTR ip = "127.0.0.1";
+		inet_pton(AF_INET, ip, &serAddr.sin_addr);
 		if (connect(sclient, (sockaddr*)&serAddr, sizeof(serAddr)) == SOCKET_ERROR)
 		{  //连接失败 
 			printf("connect error !");

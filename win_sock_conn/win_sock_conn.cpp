@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
     char revData[255];
     while (true)
     {
-        printf("等待连接...\n");
+        printf("等待连接...\r\n");
         sClient = accept(slisten, (SOCKADDR*)&remoteAddr, &nAddrlen);
         if (sClient == INVALID_SOCKET)
         {
@@ -54,8 +54,8 @@ int main(int argc, char* argv[])
             continue;
         }
         WCHAR ip[16] = TEXT("0");
-        //printf("接受到一个连接：%s \r\n", inet_ntoa(remoteAddr.sin_addr));
-        printf("接受到一个连接：%s \r\n", InetNtop(AF_INET, &remoteAddr.sin_addr.S_un.S_addr,ip , 100));
+        char str[INET_ADDRSTRLEN];
+        printf("\r\n接受到一个连接：%s \r\n", inet_ntop(AF_INET, &remoteAddr.sin_addr, str, sizeof(str)));
 
         //接收数据  
         int ret = recv(sClient, revData, 255, 0);
@@ -63,10 +63,12 @@ int main(int argc, char* argv[])
         {
             revData[ret] = 0x00;
             printf(revData);
+            printf("\r\n");
+            
         }
 
         //发送数据  
-        const char* sendData = "你好，TCP客户端！\n";
+        const char* sendData = "你好,TCP客户端！\n";
         send(sClient, sendData, strlen(sendData), 0);
         closesocket(sClient);
     }
